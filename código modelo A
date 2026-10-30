@@ -1,0 +1,34 @@
+(function iniciarEnvio() {
+    // === CONFIGURE SUA MENSAGEM AQUI ===
+    const SUA_MENSAGEM = "Muito bom! Acompanhando sempre.";
+
+    // 1. Procura a caixa de texto
+    const textarea = document.querySelector('textarea');
+    if (!textarea) {
+        console.error("❌ Erro: Não encontrei a caixa de comentários. Role a página até ela aparecer na tela e tente de novo.");
+        alert("Caixa de comentário não encontrada nesta página! Role até ela aparecer.");
+        return;
+    }
+
+    // 2. Preenche o texto simulando digitação
+    textarea.focus();
+    textarea.value = SUA_MENSAGEM;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    textarea.dispatchEvent(new Event('change', { bubbles: true }));
+
+    // 3. Procura o botão de enviar
+    setTimeout(() => {
+        const botoes = Array.from(document.querySelectorAll('button'));
+        const botao = botoes.find(b => {
+            const texto = (b.innerText || '').toLowerCase().trim();
+            return texto.includes('comentar') || texto.includes('enviar') || b.type === 'submit';
+        });
+
+        if (botao && !botao.disabled) {
+            botao.click();
+            console.log("🚀 [SUCESSO] Mensagem enviada:", SUA_MENSAGEM);
+        } else {
+            console.warn("⚠️ Botão de enviar não encontrado ou ainda está desabilitado.");
+        }
+    }, 500);
+})();
